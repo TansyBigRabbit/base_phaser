@@ -1,0 +1,110 @@
+﻿var openid,seewid,seehei;
+$(function(){
+ window.localStorage.clear();
+ seewid=document.documentElement.clientWidth;
+ seehei=document.documentElement.clientHeight;
+ initImg();
+var code = getUrlParam('code');
+   if(code.length>0){
+	//mui.alert("code"+code);
+	var url01 = "http://design.youzidata.com/car/api/Get_wx_openid.php?code="+code;
+	$.post(url01,{},function(data){
+		if(data.statusCode=='1004'){
+			/*mui.alert('code不可用！');*/
+			console.log('code过期，重新进页面');
+			window.location.href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxe306e9eadebcee76&redirect_uri=http%3a%2f%2fdesign.youzidata.com%2fcar&response_type=code&scope=snsapi_base&state=state01#wechat_redirect"
+			openid = window.sessionStorage.getItem('openid');
+			window.localStorage['openid']=openid;
+		}else if(data.statusCode=='1000'){
+			openid = data.data.openid;
+			window.localStorage['openid']=openid;
+			window.sessionStorage.setItem('openid', openid);
+			/*getUserInfo(openid); */
+        } 
+	})
+}  
+ 
+ var gallery = mui('.mui-slider');
+gallery.slider({
+  interval:0//自动轮播周期，若为0则不自动播放，默认为0；
+}); 
+document.querySelector('.mui-slider').addEventListener('slide', function(event) {
+　　　　var current_num = event.detail.slideNumber;
+　　　　if(current_num=='0'){
+	 $("#arrow_left").css("display",'none');
+	 $("#arrow_right").css("display",'block');
+　　　　}else if(current_num=='1'){
+	 $("#arrow_left").css("display",'block');
+	 $("#arrow_right").css("display",'block');
+　　　　}else{
+	$("#arrow_left").css("display",'block');
+	 $("#arrow_right").css("display",'none');
+　　　　}
+　　});
+});
+function initImg(){
+	$(".slider-img").css('width',seewid);
+	$(".slider-img").css('height',seehei);
+}
+ function getUrlParam(name){
+ 	var reg = new RegExp('(^|$)'+name+'=([^&]*)(&|$)');
+ 	var r = window.location.search.substr(1).match(reg);
+ 	if(r!=null) return unescape(r[2]);
+ 	return null
+ }
+var flag='0'; 
+ function getUserInfo(openid){
+	 if(openid==null){
+		 openid="";
+	 } 
+	 if(openid.length>0){
+		   var settings = {
+				   "async": false,
+				   "dataType": 'json',
+				   "crossDomain": true,
+				   "url": "http://design.youzidata.com/car/api/Get_user_info.php?openid="+openid,
+				   "method": "POST",
+				   "headers": {
+				     "Cache-Control": "no-cache",
+				     "Postman-Token": "bb8a0f80-e226-425a-8485-c5a4cdd24c5e"
+				   }
+				 }
+
+				 $.ajax(settings).done(function (json) {
+					 if(json.statusCode=='1002'){
+							//说明此用户之前没有保存过信息在db里
+				              
+				             window.localStorage['gift1']='0';
+				             window.localStorage['gift2']='0';
+				             window.localStorage['user_type']='';
+				            flag='1';
+						}else if(json.statusCode=='1'){
+							mui.alert('获取用户信息失败，请稍后再试');
+							flag='0';
+						}else{
+						 
+				         window.localStorage['gift1']=json.data.gift1;
+				         window.localStorage['gift1_time']=json.data.gift1_time;
+				         window.localStorage['gift2']=json.data.gift2;
+				         window.localStorage['gift2_time']=json.data.gift2_time;
+				         window.localStorage['user_type']=json.data.user_type;
+				         window.localStorage['phone_num']=json.data.phone_num;
+				         flag='1';
+				         window.localStorage['password']=json.data.password;
+						 
+						}  
+				 });
+	 }else{
+		console.log('openid为空，重新进页面');
+		window.location.href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxe306e9eadebcee76&redirect_uri=http%3a%2f%2fdesign.youzidata.com%2fcar&response_type=code&scope=snsapi_base&state=state01#wechat_redirect" 
+	 }
+
+ }
+
+  document.getElementById('loginBtn').addEventListener('click', function(event) { 
+ 	getUserInfo(openid);
+ 	if(flag=='1'){
+    $("#mainContent").load('login.html');
+ 	}
+ 	 
+}); 

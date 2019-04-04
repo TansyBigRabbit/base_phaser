@@ -1,0 +1,247 @@
+ 
+
+	<script type="text/javascript" src="js/system/phaser.min.js"></script>
+	<script src="js/system/jquery-1.9.1.js"></script>
+	<style type="text/css">
+
+		body{
+
+			margin: 0;
+
+			padding: 0;
+
+		}
+
+		#game{
+
+			position: absolute;
+
+			height: 100%;
+
+			width: 100%;
+
+		}
+
+		canvas{
+
+			margin: 0 auto!important;
+
+		}
+
+		#designerForm{
+
+			 /*背景图像将仅显示一次 no-repeat*/
+
+            background-repeat: no-repeat;
+
+            /*添加您要添加的背景图片*/
+
+            background-image: url('assets/image/gameover/designerbg.jpg');
+
+            position:fixed;
+
+		      top: 0;
+
+		      left: 0;
+
+		      bottom: 0;
+
+		      width:100%;
+
+		      height:100%;
+
+		      min-width: 300px;
+
+		      z-index:-10;
+
+		      zoom: 1;
+
+		      background-color: #fff;
+
+		      background-repeat: no-repeat;
+
+		      background-size: cover;
+
+		      -webkit-background-size: cover;
+
+		      -o-background-size: cover;
+
+		      overflow: scroll;
+
+		      /*background-position: center 0; position: absolute; */
+
+			
+
+		}
+
+		label>p{
+
+			color: red;
+
+			display: inline;
+
+			font-size: 14px;
+
+		}
+
+		.formbody{
+
+			margin-left: 1.5em;
+
+		    top:4.8em;
+
+		    width: 86%;
+
+		    position: absolute;
+
+		}
+
+		.mui-btn-block {
+
+        height: 2em;
+
+        font-size: 16px;
+
+        display: block;
+
+        /* width: 100%; */
+
+        margin-bottom: 5px;
+
+        padding: 0px 15px; 
+
+        }
+
+        input,select{
+
+        height: 2em!important;
+
+        margin-bottom:5px!important
+
+        }
+
+        .mui-btn-primary{
+
+            width: 39%;
+
+            color: #fff;
+
+            border: 1px solid #004098;
+
+            background-color: #004098;
+
+            }
+
+          h3{
+
+          	color:#004098;
+
+          	margin: 1.5em;
+
+          	text-align: center;
+
+          }
+
+	</style>
+
+
+
+
+
+<div id="game"  ></div>
+
+<div id="designerForm" style="display:none;">
+
+	<h3>机械设计师之旅</h3>
+
+	<div class="formbody">
+
+		<label><p>*</p>公司名称</label>
+
+		<input id="companyName" type="text" class="mui-input-clear" >
+
+        <label><p>*</p>姓名</label>
+
+		<input id="userName" type="text" class="mui-input-clear" >
+
+		<label><p>*</p>邮箱(e-Mail)</label>
+
+		<input id="email" type="text" class="mui-input-clear" >
+
+		<label><p>*</p>手机号</label>
+
+		<input id="phoneNum" type="text" class="mui-input-clear" >
+
+
+
+		<label><p>*</p>使用的SolidWorks版本</label>
+
+		<select id="selectObj01" class="mui-btn mui-btn-block"> 
+		<option selected="selected" disabled="disabled"  style='display: none' value=''></option>
+        <option value="2013">2013</option>
+
+        <option value="2014">2014</option>
+
+        <option value="2015">2015</option>
+
+        <option value="2016">2016</option>
+
+        <option value="2017">2017</option>
+
+        <option value="2018">2018</option>  
+        <option value="ohter">其他</option>   <!--new-->
+
+        </select> 
+
+
+
+		<label><p>*</p>电脑系统</label>
+
+		<select id="selectObj02" class="mui-btn mui-btn-block"> 
+		<option selected="selected" disabled="disabled"  style='display: none' value=''></option>
+        <option value="windows7">windows7</option>        
+        <option value="windows10">windows10</option> 
+		<option value="ohter">其他</option>      <!--new-->
+        </select>
+
+		<label><p>*</p>电脑bit数</label>
+
+		<select id="selectObj03" class="mui-btn mui-btn-block"> 
+		<option selected="selected" disabled="disabled"  style='display: none' value=''></option>
+		<option value="32bit">32Bit</option> 
+		<option value="64bit">64Bit</option> 
+		<option value="both">32Bit·64Bit两个都有</option> 		<!--new-->
+		<option value="ohter">其他</option> 		<!--new-->
+        </select>
+
+		<label><p>*</p>网络环境</label>
+
+		<select id="selectObj04" class="mui-btn mui-btn-block"> 
+		<option selected="selected" disabled="disabled"  style='display: none' value=''></option>
+        <option value="1">有</option> 
+        <option value="0">无</option> 
+
+        </select>
+
+        <div style="margin-top: 1em;text-align: center;">
+
+	    <button type="button" class="mui-btn mui-btn-primary mui-btnAdd" onclick="btnclick()" style="margin-bottom: 10px"><b>立即领取</b></button>
+
+        </div>
+
+	</div>
+
+</div>
+
+<script type="text/javascript" src="js/gameGuide.js"></script>
+
+<script type="text/javascript" src="js/gameStart.js"></script>
+
+<script type="text/javascript" src="js/gameOver.js"></script>
+
+<script type="text/javascript" src="js/game.js"></script>
+
+
+
+<script type="text/javascript" src="js/main.js"></script>
+ 

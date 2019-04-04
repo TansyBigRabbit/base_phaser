@@ -1,0 +1,50 @@
+
+
+    
+            // 微信分享
+			var shareData = {
+			    title: '米思米助力智造业的明天', // 分享标题
+			    desc: '岂曰无衣，与子同袍！米思米支援华工再战机甲大师赛 助力智造业的明天！', // 分享描述
+			    link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxe306e9eadebcee76&redirect_uri=http%3a%2f%2fdesign.youzidata.com%2fcar&response_type=code&scope=snsapi_base&state=state01#wechat_redirect',    
+			    imgUrl: 'http://design.youzidata.com/car/assets/image/title-img.jpg', // 分享图标
+			};
+			
+			$.ajax({
+			    url: "../sign.php",
+			    data:{url: window.location.href },
+			    success: function (data) {
+			        // 微信分享事件监听
+			        data = JSON.parse(data);
+			        //alert(data.signature);
+			        // console.log(data.string1);
+			        wx.config({
+			            debug: false,
+			            appId: data.appId, // 公众号的唯一标识
+			            timestamp: data.timestamp, // 生成签名的时间戳
+			            nonceStr: data.noncestr, // 生成签名的随机串
+			            signature: data.signature, // 签名
+			            jsApiList: [
+			                // 所有要调用的 API 都要加到这个列表中
+			                'checkJsApi',
+			                'onMenuShareTimeline',
+			                'onMenuShareAppMessage',
+			                'onMenuShareQQ',
+			                'hideMenuItems',
+			                'hideAllNonBaseMenuItem',
+			                'hideOptionMenu',
+			                'hideOptionMenu',
+			                'showMenuItems',
+			                'hideMenuItem'
+			            ]
+			        });
+			        wx.ready(function () {
+			            wx.onMenuShareTimeline(shareData);
+			            wx.onMenuShareAppMessage(shareData);
+			        });
+			    }
+			});
+		 
+		
+        });
+        
+

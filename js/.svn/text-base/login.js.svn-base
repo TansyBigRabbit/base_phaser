@@ -1,0 +1,114 @@
+﻿var userType,loginName,userPwd;
+
+$(function(){
+$("#msgWindow").css('display','none');
+mui.init();
+userType = window.localStorage.getItem("user_type");
+if(userType.length>0){
+   fillData();
+} 
+});
+
+function fillData(){
+  loginName = window.localStorage.getItem("phone_num");
+  //userPwd = window.localStorage.getItem("password");
+ $("#selectObj").val(userType);
+ $("#account").val(loginName);
+ //$("#password").val(userPwd);
+}
+
+function setUserInfo(account,password,selectValue){
+   window.localStorage['password'] = password;
+   window.localStorage['user_type']=selectValue;
+   window.localStorage['phone_num']=account;
+   var openid = window.localStorage.getItem("openid");
+   var settings = {
+  "async": false,
+  "crossDomain": true,
+  "dataType": 'json',
+  "url": "http://design.youzidata.com/car/api/Set_user_info.php?openid="+openid+"&user_type="+selectValue+"&phone_num="+account+"&password="+password,
+  "method": "GET",
+  "headers": {
+    "Cache-Control": "no-cache",
+    "Postman-Token": "bb8a0f80-e226-425a-8485-c5a4cdd24c5e"
+  }
+}
+
+$.ajax(settings).done(function (response) {
+   if(response.statusCode=='1000'){
+       $("#mainContent").load('game.html');
+     } 
+});
+ 
+}
+
+document.getElementById('msgWindow').addEventListener('click', function(event) { 
+    $("#msgWindow").css('display','none')
+});
+
+/**/
+//登陆
+function login(){
+   var selectValue = $("#selectObj").find("option:selected").val();
+   var account = $("#account").val();
+   var password = $("#password").val();
+   if(selectValue==""){
+      mui.alert("请选择登陆身份");
+      return
+   }
+   if(account==""){
+      mui.alert("请输入账号");
+      return
+   }
+   if(password==""){
+      mui.alert("请输入密码");
+      return
+   }
+
+    var url = "http://m.misumi.com.cn:8080/customerinfo/MobileLoginServlet";
+   var obj = {
+   'mobile': account,
+   'password': password
+   };
+   obj = JSON.stringify(obj); 
+   $.post(url,obj,function(data){
+   if(data.code=="0"){
+   setUserInfo(account,password,selectValue); 
+   //$("#mainContent").load('game.html');
+   }else{
+   $("#msgWindow").css('display','block');
+   $("#msgContent").html("<p class=\"msgwords\">"+data.remsg+"</p>");
+   }
+   },'json')   
+/*   var obj = {
+		   'mobile': account,
+		   'password': password
+		   };
+		   obj = JSON.stringify(obj); 
+   var settings = {
+		   "async": false,
+		   "dataType": 'json',
+		   "crossDomain": true,
+		   "url": "http://m.misumi.com.cn:8080/customerinfo/MobileLoginServlet",
+		   "data":obj,
+		   "method": "POST",
+		   "headers": {
+			   "Cache-Control": "no-cache",
+			    "Postman-Token": "0da7c9ad-7a4c-4bd1-8b37-31b4dd13fdc5" 
+		   }
+		 }
+
+		 $.ajax(settings).done(function (data) {
+			 if(data.code=="0"){
+				   setUserInfo(account,password,selectValue); 
+				   //$("#mainContent").load('game.html');
+				   }else{
+				   $("#msgWindow").css('display','block');
+				   $("#msgContent").html("<p class=\"msgwords\">"+data.remsg+"</p>");
+				   }
+		 });*/
+   
+   /*setUserInfo(account,password,selectValue);*/ //0912 
+}
+
+//# sourceURL=login.js
